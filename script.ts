@@ -1,43 +1,4 @@
 
-
-
-
-
-
-// document.addEventListener("DOMContentLoaded", () => {
-//     const searchInput = document.getElementById("search-input") as HTMLInputElement | null;
-//     const resultsContainer = document.getElementById("results");
-
-//     if (!searchInput || !resultsContainer) return;
-
-//     const fetchResults = async (query: string) => {
-//         try {
-//             const res = await fetch(`http://localhost:3001/?q=${encodeURIComponent(query)}`);
-//             if (!res.ok) throw new Error("Failed to fetch data");
-
-//             const json: string[] = await res.json();
-//             resultsContainer.innerHTML = `<ul><li>${json.join("</li><li>")}</li></ul>`;
-//         } catch (error) {
-//             console.error("Error fetching data:", error);
-//             resultsContainer.innerHTML = "<p>Error loading results</p>";
-//         }
-//     };
-
-    
-   
-
-//     searchInput.addEventListener("keyup", () => {
-//         const query = searchInput.value.trim();
-//         if (query.length > 0) {
-            
-//             fetchResults(query);
-//         } else {
-//             resultsContainer.innerHTML = "";
-//         }
-//     });
-// });
-
-
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input") as HTMLInputElement | null;
     const resultsContainer = document.getElementById("results");
