@@ -1,19 +1,19 @@
 
+
+
 document.addEventListener("DOMContentLoaded", () => {
     const searchInput = document.getElementById("search-input") as HTMLInputElement | null;
     const resultsContainer = document.getElementById("results");
 
-    if (!searchInput || !resultsContainer) return; // Early return if elements are not found
+    if (!searchInput || !resultsContainer) return; 
 
-    // Debounce function to delay execution of fetchResults
-    let debounceTimeout: number | undefined;
-
-    const debounce = (func: Function, delay: number) => {
+    const debounce = (func: (...args: any[]) => void, delay: number) => {
+        let debounceTimeout: number | undefined; 
         return (...args: any[]) => {
             if (debounceTimeout) {
-                clearTimeout(debounceTimeout); // Clear the previous timeout
+                clearTimeout(debounceTimeout);
             }
-            debounceTimeout = setTimeout(() => func(...args), delay); // Set a new timeout
+            debounceTimeout = window.setTimeout(() => func(...args), delay);
         };
     };
 
@@ -31,14 +31,19 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 
-    // Update the results container with the fetched data
+    // Update the results container with the fetched data safely
     const updateResults = (results: string[]): void => {
-        if(results?.length>=1){
-            resultsContainer.innerHTML = `<ul><li>${results.join("</li><li>")}</li></ul>`;  
-        }else{
-            resultsContainer.innerHTML = "";
+        resultsContainer.innerHTML = ""; // Clear previous results
+
+        if (results.length > 0) {
+            const ul = document.createElement("ul");
+            results.forEach(result => {
+                const li = document.createElement("li");
+                li.textContent = result; // Avoids innerHTML for security
+                ul.appendChild(li);
+            });
+            resultsContainer.appendChild(ul);
         }
-        
     };
 
     // Display an error message when data fetching fails
@@ -46,18 +51,16 @@ document.addEventListener("DOMContentLoaded", () => {
         resultsContainer.innerHTML = "<p>Error loading results</p>";
     };
 
-    // Event listener for keyup to trigger fetching results with debounce
     searchInput.addEventListener("keyup", debounce(() => {
         const query = searchInput.value.trim();
 
         if (query.length > 0) {
-            fetchResults(query); // Fetch results if query is not empty
+            fetchResults(query); 
         } else {
-            clearResults(); // Clear results if query is empty
+            clearResults(); 
         }
-    }, 300)); // 300ms debounce delay
+    }, 300)); 
 
-    // Clear results container
     const clearResults = (): void => {
         resultsContainer.innerHTML = "";
     };
